@@ -1,0 +1,37 @@
+/* 
+    Document   : stack
+    Created on : 13-Jan-2017, 19:20:13
+    Author     : Pankaj
+    Description:
+        CSS for styling of stack
+*/
+
+root { 
+    display: block;
+}
+
+.stack_box {
+    width: 40%;
+    height: 50px;
+    border: solid 1px;
+    text-align: center;
+    line-height: 50px;
+    position: absolute;
+    left:30%;
+    text-overflow: ellipsis;
+}
+
+#stack_label {
+    position: absolute;
+    width: 40%;
+    left:30%;
+    bottom: 20px;
+    color: blue;
+    text-align: center;
+}
+
+.txt {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}

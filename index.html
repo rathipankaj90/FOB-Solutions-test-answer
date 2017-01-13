@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="stack.css">
+        <script src="jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                //On clicking push
+                $("#push_to_stack").click(function(){
+                    var hgt=$(window).height();
+                    var n=$('#entered_no').val();
+                    var bt;
+                    var new_bt;
+                    if(n === undefined || n === "")
+                        return;
+                    if($('.stack_box').length === 0) {
+                        //If stack was empty
+                        bt=$('#stack_label').css("bottom").replace('px','');
+                        new_bt = Number(bt) + 30;
+                    }
+                    else {
+                        bt=$('.stack_box').last().css("bottom").replace('px','');
+                        new_bt = Number(bt) + 50;
+                    }
+                    //Check for viewport height
+                    if((Number(new_bt) + 100) > hgt) {
+                        alert("Window limit reached. Unable to add more to the stack.");
+                        return;
+                    }
+                    //Update in local storage
+                    if (typeof(Storage) !== "undefined") {
+                        var storedData=JSON.parse(localStorage.getItem("data"));
+                        if(storedData ==  null) {
+                            storedData = [];
+                        }
+                        storedData.push(n);
+                        localStorage.setItem("data", JSON.stringify(storedData));
+                    }
+                    $('#stack_label').parent().append('<div class="stack_box" style="bottom:'+new_bt+'px">'+n+'</div>');
+                });
+                
+                //On clicking Pop
+                $("#pop_from_stack").click(function(){
+                    //Update in local storage
+                    if (typeof(Storage) !== "undefined") {
+                        var storedData=JSON.parse(localStorage.getItem("data"));
+                        if(storedData ==  null) {
+                            storedData = [];
+                        }
+                        storedData.pop();
+                        localStorage.setItem("data", JSON.stringify(storedData));
+                    }
+                    $('.stack_box').last().remove();
+                });
+                
+                //On clicking Reset
+                $("#stack_reset").click(function(){
+                    //Update in local storage
+                    if (typeof(Storage) !== "undefined") {
+                        storedData = [];
+                        localStorage.setItem("data", JSON.stringify(storedData));
+                    }
+                    $('.stack_box').remove();
+                });
+                
+                //Check for numbers only
+                $('.numbersOnly').keyup(function () { 
+                    this.value = this.value.replace(/[^0-9\.]/g,'');
+                });
+                
+                //Populate the data from localstorage
+                var storedData=[];
+                if (typeof(Storage) !== "undefined") {
+                    storedData=JSON.parse(localStorage.getItem("data"));
+                }
+                $.each(storedData, function( i, val ) {
+                    var hgt=$(window).height();
+                    var bt;
+                    var new_bt;
+                    if($('.stack_box').length === 0) {
+                        bt=$('#stack_label').css("bottom").replace('px','');
+                        new_bt = Number(bt) + 30;
+                    }
+                    else {
+                        bt=$('.stack_box').last().css("bottom").replace('px','');
+                        new_bt = Number(bt) + 50;
+                    }
+                    // Stop 100px below the window limit
+                    if((Number(new_bt) + 100) > hgt) {
+                        alert("Sorry ! Window limit reached.");
+                        return;
+                    }
+                    
+                    $('#stack_label').parent().append('<div class="stack_box" style="bottom:'+new_bt+'px">'+val+'</div>');
+                });
+                
+            });
+        </script>
+    </head>
+    <body>
+        <div style="width:33%;float:left">
+            <input type="text" name="num" id="entered_no" class="numbersOnly" maxlength="50" size="30">
+            <button type="button" id="push_to_stack">Push</button>
+        </div>
+        <div style="width:33%;float:left;text-align: center">
+            <span style="margin:auto"><button type="button" id="pop_from_stack">Pop</button></span>
+        </div>
+        <div style="width:33%;float:left;text-align: center">
+            <span style="margin:auto"><button type="button" id="stack_reset" style="margin:auto">Reset</button></span>
+        </div>
+        
+        <div id="stack_label">Stack</div>
+        
+    </body>
+</html>
