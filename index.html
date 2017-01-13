@@ -70,6 +70,16 @@
                     this.value = this.value.replace(/[^0-9\.]/g,'');
                 });
                 
+                //Triggering click on enter key press
+                $('#entered_no').keypress(function (e) {
+                    var key = e.which;
+                    if(key == 13)  // the enter key code
+                    {
+                       $('#push_to_stack').click();
+                       return false;  
+                    }
+                });   
+                
                 //Populate the data from localstorage
                 var storedData=[];
                 if (typeof(Storage) !== "undefined") {
